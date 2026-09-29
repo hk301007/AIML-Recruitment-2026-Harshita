@@ -1,0 +1,26 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# PyTorch checkpoints and model weights
+checkpoints/
+*.pt
+*.pth
+
+# Dataset download cache (keep repo lightweight, download via code)
+data/
+MNIST/
+
+# Virtual environment
+.venv/
+env/
+venv/
+ENV/
+
+# Jupyter Notebook checkpoints
+.ipynb_checkpoints/
+
+# Operating System artifacts
+.DS_Store
+Thumbs.db

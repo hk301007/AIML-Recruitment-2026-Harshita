@@ -1,4 +1,4 @@
-# AI-ML Recruitment 2026 — Task 2: Neural Network
+# AI-ML Recruitment 2026 — Task :Neural Network
 > **Comprehensive Deep Learning Solution for Handwritten Digit Classification (MNIST)**  
 > *Developed for Coding Ninjas / 10X Club SRM AI-ML Recruitment Drive*
 
@@ -13,13 +13,11 @@
 - **Candidate Name:** Harshita Khurana
 - **GitHub Username:** hk301007
 - **Target Organization:** Coding Ninjas / 10X Club SRM
-- **Recruitment Track:** AI-ML Recruitment — Second Years (2026)
 - **Assigned Task Selected:** Task 2 (Neural Network)
 
 ---
 
 ## 2. Tasks Completed
-- [x] **Task 1: Air Quality Forecasting** (Not selected — specialized in Deep Learning / Neural Networks)
 - [x] **Task 2: Neural Network** (Completed with advanced ablation studies and error analysis)
   - [x] **Part A – Dataset Understanding**: 70k samples, 28x28 grayscale, 10 classes, semantic labels.
   - [x] **Part B – Data Preprocessing**: Min-Max scaling, Z-score standardization, flattening, train/val/test splits.
@@ -27,9 +25,7 @@
   - [x] **Part D – Activation Functions**: Mathematical breakdown of ReLU, Dying ReLU nuance, and Softmax output.
   - [x] **Part E – Training Dynamics**: Per-epoch loss/accuracy recording, dual-axis learning curves.
   - [x] **Part F – Comprehensive Evaluation**: Test accuracy (~98%), Seaborn confusion matrix, classification report, qualitative misclassification analysis.
-  - [x] **Part G – Scientific Experimentation**: 4-model ablation study (Depth, Activation, Optimizer) answering all 3 mandatory analysis questions.
-  - [x] **Bonus**: Viva / Club Interview Preparation Cheatsheet.
-
+  - [x] **Part G – Scientific Experimentation**: 4-model ablation study (Depth, Activation, Optimizer)
 ---
 
 ## 3. Problem Statement
@@ -124,20 +120,6 @@ We evaluated four architectural and optimization variations under identical trai
 | **Sigmoid MLP** | 1 layer (128) | **Sigmoid** | Adam (1e-3) | 101,770 | **97.30%** | **97.60%** | ~138s |
 | **Baseline + SGD** | 1 layer (128) | **ReLU** | SGD-M (1e-2) | 101,770 | **97.77%** | **97.82%** | ~263s |
 
-#### Mandatory Part G Questions Answered:
-1. **What did you change?**
-   - *Architecture Depth:* Added a second hidden layer ($784 \to 256 \to 128 \to 10$), expanding parameters from 101k to 235k (+131%).
-   - *Activation Function:* Replaced non-saturating ReLU with smooth Sigmoid ($\sigma(z) = \frac{1}{1 + e^{-z}}$) while keeping learning rates and optimizers identical.
-   - *Optimization Algorithm:* Replaced adaptive moment estimation (Adam) with classical Stochastic Gradient Descent with Nesterov Momentum ($\mu = 0.9, \text{lr} = 0.01$).
-2. **What changed in the results?**
-   - The **Deeper MLP** achieved the highest accuracy (**97.92%**), reducing test error from 2.30% to 2.08%.
-   - The **Sigmoid MLP** suffered a notable accuracy drop down to **97.60%** and exhibited sluggish loss reduction in early epochs compared to ReLU.
-   - **SGD with Momentum** achieved competitive accuracy (**97.82%**) but required a 10x higher learning rate ($0.01$) to escape initial flat loss regions.
-3. **Why do you think the change affected the model's performance?**
-   - *Deeper Hierarchy:* Hierarchical composition allows the first layer to learn edge/stroke orientations, while the second layer combines these primitives into localized digit loops and junctions.
-   - *Vanishing Gradients in Sigmoid:* Sigmoid derivatives peak at only $0.25$ and shrink exponentially to $0$ as $|z|$ grows. Gradients flowing back to the input layer were attenuated, suppressing effective weight updates.
-   - *Adaptive Moments in Adam:* Adam scales individual parameter updates inversely with gradient magnitudes, effortlessly navigating anisotropic curvatures without manual learning-rate schedules.
-
 ---
 
 ### C. Visual Assets Generated
@@ -200,75 +182,3 @@ AIML-Recruitment-2026-NeuralNetwork/
 ```
 
 ---
-
-## 10. How to Run & Reproduce
-
-### Step 1: Clone Repository & Install Dependencies
-```bash
-git clone https://github.com/<YourUsername>/AIML-Recruitment-2026-<YourName>.git
-cd AIML-Recruitment-2026-<YourName>
-pip install -r requirements.txt
-```
-
-### Step 2: Run the Full End-to-End Pipeline (CLI)
-To train all models, generate comparison charts, and save checkpoints:
-```bash
-python run_pipeline.py
-```
-
-### Step 3: Run / View the Interactive Jupyter Notebook
-Open the pre-computed notebook in JupyterLab, VS Code, or Google Colab:
-```bash
-jupyter notebook notebooks/mnist_neural_network.ipynb
-```
-
----
-
-## 11. Bonus: Club Interview Preparation Cheatsheet
-
-<details>
-<summary><b>Click to expand 10 High-Yield Viva / Technical Interview Questions & Answers</b></summary>
-
-<br>
-
-1. **Q: Why don't we use Mean Squared Error (MSE) for multi-class classification?**  
-   *A:* MSE assumes errors follow a Gaussian distribution. When paired with Softmax/Sigmoid, large prediction errors cause the gradient to approach zero (saturation plateau), slowing down learning. Cross-Entropy is derived from Maximum Likelihood Estimation; its gradient $\nabla_{z_i} \mathcal{L} = p_i - y_i$ is linear with respect to the error, providing strong corrective signals.
-
-2. **Q: What is the "Dying ReLU" problem, and how do you resolve it?**  
-   *A:* If a neuron's weights are updated such that its pre-activation $z = Wx+b \le 0$ across all training samples, its output and derivative are permanently 0. It will never update again. Solutions include using **Leaky ReLU** ($f(x) = \max(\alpha x, x)$ with $\alpha \approx 0.01$), **Parametric ReLU (PReLU)**, or **He (Kaiming) weight initialization**.
-
-3. **Q: Why do we initialize weights with random values instead of zeros?**  
-   *A:* Initializing weights to zero causes all hidden neurons in a layer to compute the exact same activation and receive the exact same gradient update during backpropagation (**symmetry problem**). The network would behave as if each layer had only 1 neuron. Random initialization breaks this symmetry.
-
-4. **Q: Why is Adam optimizer usually preferred over vanilla SGD?**  
-   *A:* Adam combines two key ideas: Momentum (first moment, exponential moving average of past gradients to smooth oscillations) and RMSProp (second moment, scaling learning rates inversely by root mean square of gradients). This allows it to make rapid progress on flat surfaces while avoiding divergence on steep ravines.
-
-5. **Q: What is the Universal Approximation Theorem?**  
-   *A:* Proved by Cybenko (1989) and Hornik (1991), it states that a feedforward network with a single hidden layer containing a finite number of neurons and non-linear activation functions can approximate any continuous function on compact subsets of $\mathbb{R}^n$ to arbitrary precision.
-
-6. **Q: What is the difference between Batch Gradient Descent, Mini-Batch GD, and SGD?**  
-   *A:* Batch GD computes gradients over the entire dataset (stable but slow, doesn't fit in RAM). Stochastic GD computes gradients per single sample (fast, but very noisy trajectory). Mini-Batch GD (e.g. batch size 64) strikes the optimal balance: vectorized hardware efficiency and smooth stochastic gradients that help escape local minima.
-
-7. **Q: What is the difference between $L_1$ and $L_2$ regularization?**  
-   *A:* $L_1$ regularization adds penalty $\lambda \sum |w_i|$, driving less important weights to exactly zero, producing sparse models (feature selection). $L_2$ regularization (weight decay) adds penalty $\frac{1}{2} \lambda \sum w_i^2$, shrinking weights towards zero without setting them exactly to zero, preventing dominant weights.
-
-8. **Q: How does Dropout work during training vs testing?**  
-   *A:* During training, Dropout randomly deactivates each neuron with probability $p$, preventing co-adaptation of features. During testing/inference, Dropout is disabled (`model.eval()`), and neuron outputs are scaled by $(1-p)$ (or inverted dropout scales by $\frac{1}{1-p}$ during training) to preserve expected activation values.
-
-9. **Q: What are the fundamental limitations of an MLP on computer vision tasks?**  
-   *A:* MLPs flatten images into 1D vectors, destroying 2D spatial locality and neighborhood relationships. They lack **translation invariance** (a digit shifted by 3 pixels appears as completely different features). Convolutional Neural Networks (CNNs) solve this via weight sharing and local receptive fields.
-
-10. **Q: Why do we normalize MNIST with mean 0.1307 and std 0.3081?**  
-    *A:* 0.1307 and 0.3081 are the exact pre-calculated global mean and standard deviation of all pixel intensities across the 60,000 MNIST training images. Standardizing by these statistics centers the data cloud at origin $(0, 0)$ with unit variance, ensuring spherical loss contours.
-
-</details>
-
----
-
-## 12. Submission Verification Checklist
-- [x] Repository follows naming convention: `AIML-Recruitment-2026-<YourName>`
-- [x] Public GitHub repository with clean `.gitignore`
-- [x] Executable code and pre-rendered Jupyter Notebook
-- [x] All 8 required README sections included and detailed
-- [x] All visual figures present and saved in `assets/`
-- [x] 100% reproducible with fixed random seed 42
